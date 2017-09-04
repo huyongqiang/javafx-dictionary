@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<TabPane tabClosingPolicy="UNAVAILABLE">
+			<Tab text="Search">
+				<VBox>
+					<HBox>
+						<TextField fx:id="searchField" promptText="Search any word you want"/>
+						<Button text="Search" onAction="#searchBtnOnPress"/>
+					</HBox>
+					<Text fx:id="result"/>
+				</VBox>
+			</Tab>
+			<Tab text="Add Word">
+				<VBox>
+					<TextField fx:id="addWordField" promptText="Add a word"/>
+					<TextField fx:id="addMeaningField" promptText="Add the word's meaning" />
+					<Button text="Submit" onAction="#addBtnOnPress"/>
+				</VBox>
+			</Tab>
+			<Tab text="Remove Word">
+				<VBox>
+					<TextField fx:id="removeWordField" promptText="enter the word you want to remove"/>
+					<Button text="Submit" onAction="#removeBtnOnPress"/>
+				</VBox>
+			</Tab>
+		</TabPane>
+	</center>
+
+</BorderPane>
