@@ -1,3 +1,6 @@
+/**
+ * create a socket to send a request to connect with the server
+ */
 package application.client;
 
 import java.io.DataInputStream;
@@ -8,6 +11,7 @@ import java.util.function.Consumer;
 
 import application.utils.INetworkConnection;
 import application.utils.MyResponse;
+import javafx.application.Platform;
 
 public class Client implements INetworkConnection {
 	private ConnectionThread conectThread = new ConnectionThread();
@@ -15,8 +19,10 @@ public class Client implements INetworkConnection {
 	private String host;
 	private Consumer<String> onReceiveCallback;
 	private boolean conneFlag = true;
+	private ClientController controller;
 
-	public Client(int port, String host, Consumer<String> onReceiveCallback) {
+	public Client(ClientController controller, int port, String host, Consumer<String> onReceiveCallback) {
+		this.controller = controller;
 		this.port = port;
 		this.host = host;
 		this.onReceiveCallback = onReceiveCallback;
@@ -60,14 +66,28 @@ public class Client implements INetworkConnection {
 					MyResponse response = helper.handleResponse(str);
 					System.out.println(response.getMessage());
 					
-					if(response.getType().equals("search"))
-						onReceiveCallback.accept(response.getData());
+					if(response.getType().equals("search")) {
+						if(response.getStatus() == 400) {
+							Platform.runLater(()->{
+								controller.createAlert("Warning", "Not found this word in database");
+							});
+						}else {
+							onReceiveCallback.accept(response.getData());
+						}
+					}else {
+						Platform.runLater(()->{
+							controller.createAlert("Warning", response.getMessage());
+						});
+					}
+						
 				}
 				
-				//socket.shutdownInput();
-				//socket.shutdownOutput();
+				socket.shutdownInput();
+				socket.shutdownOutput();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Platform.runLater(()->{
+					controller.createAlert("Warning", "Connect Error");
+				});
 			}
 
 		}

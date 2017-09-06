@@ -70,7 +70,7 @@ public class ClientActionHelper {
 		return response;
 	}
 
-	private synchronized MyResponse handleAdd(JSONObject obj) {
+	private MyResponse handleAdd(JSONObject obj) {
 		String status = (String) obj.get("status");
 		String msg = (String) obj.get("msg");
 		
@@ -79,7 +79,7 @@ public class ClientActionHelper {
 		return response;
 	}
 
-	private synchronized MyResponse handleDelete(JSONObject obj) {
+	private MyResponse handleDelete(JSONObject obj) {
 		String status = (String) obj.get("status");
 		String msg = (String) obj.get("msg");
 		

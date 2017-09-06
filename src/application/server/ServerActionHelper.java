@@ -44,15 +44,21 @@ public class ServerActionHelper {
 
 		JSONObject obj = new JSONObject();
 		obj.put("action", SEARCH);
-		obj.put("status", "200");
-		obj.put("meaning", meaning);
-		obj.put("msg", "Search Successfully");
+		if (meaning.equals("-1")) {
+			obj.put("status", "400");
+			obj.put("meaning", "not found");
+			obj.put("msg", word + " isn't in database");
+		} else {
+			obj.put("status", "200");
+			obj.put("meaning", meaning);
+			obj.put("msg", "Search Successfully");
+		}
 
 		return obj.toJSONString();
 	}
 
 	@SuppressWarnings("unchecked")
-	private synchronized String handleAdd(JSONObject object) {
+	private String handleAdd(JSONObject object) {
 		String word = (String) object.get("word");
 		String meaning = (String) object.get("meaning");
 		boolean result = dbHelper.insertRecord(new Word(word, meaning));
@@ -64,14 +70,14 @@ public class ServerActionHelper {
 			obj.put("msg", "Add " + word + " Successfully");
 		} else {
 			obj.put("status", "400");
-			obj.put("msg", "Add " + word + " Failed, the word is duplicate");
+			obj.put("msg", "Add " + word + " failed, the word is duplicate");
 		}
 
 		return obj.toJSONString();
 	}
 
 	@SuppressWarnings("unchecked")
-	private synchronized String handleDelete(JSONObject object) {
+	private String handleDelete(JSONObject object) {
 		String word = (String) object.get("word");
 		boolean result = dbHelper.deleteRecord(word);
 
@@ -81,10 +87,10 @@ public class ServerActionHelper {
 			obj.put("status", "200");
 			obj.put("msg", "Remove " + word + " Successfully");
 		} else {
-			obj.put("status", "500");
-			obj.put("msg", "Remove " + word + " Failed");
+			obj.put("status", "400");
+			obj.put("msg", "Remove " + word + " failed, not found this word");
 		}
-		
+
 		return obj.toJSONString();
 	}
 

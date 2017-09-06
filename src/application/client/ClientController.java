@@ -4,7 +4,9 @@ import application.utils.Word;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 
 public class ClientController {
@@ -21,7 +23,7 @@ public class ClientController {
 
 	public ClientController(String host, int port) {
 		try {
-			client = new Client(port, host, (data) -> {
+			client = new Client(this, port, host, (data) -> {
 				Platform.runLater(() -> {
 					result.setText(data);
 				});
@@ -34,6 +36,11 @@ public class ClientController {
 
 	@FXML
 	public void searchBtnOnPress(ActionEvent event) {
+		if(searchField.getText().length() <= 0) {
+			createAlert("Warning", "Enter something please...");
+			return;
+		}
+		
 		try {
 			String jsonString = helper.createSearchJson(searchField.getText());
 			client.send(jsonString);
@@ -45,6 +52,11 @@ public class ClientController {
 	
 	@FXML
 	public void addBtnOnPress(ActionEvent event){
+		if(addWordField.getText().length() <= 0 || addMeaningField.getText().length() <= 0) {
+			createAlert("Warning", "Enter something please...");
+			return;
+		}
+		
 		try {
 			String jsonString = helper.createAddJson(new Word(addWordField.getText(), addMeaningField.getText()));
 			client.send(jsonString);
@@ -57,6 +69,11 @@ public class ClientController {
 	
 	@FXML
 	public void removeBtnOnPress(ActionEvent event) {
+		if(removeWordField.getText().length() <= 0) {
+			createAlert("Warning", "Enter something please...");
+			return;
+		}
+		
 		try {
 			String jsonString = helper.createDeleteJson(removeWordField.getText());
 			client.send(jsonString);
@@ -72,5 +89,11 @@ public class ClientController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void createAlert(String title, String message) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setContentText(message);
+		alert.show();
 	}
 }

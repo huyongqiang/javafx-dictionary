@@ -53,7 +53,7 @@ public class SQLiteHelper {
 		return meaning;
 	}
 
-	public boolean insertRecord(Word word) {
+	public synchronized boolean insertRecord(Word word) {
 		boolean isOperationSuccess = true;
 		int num = 0;
 
@@ -92,9 +92,30 @@ public class SQLiteHelper {
 		return isOperationSuccess;
 	}
 
-	public boolean deleteRecord(String word) {
+	public synchronized boolean deleteRecord(String word) {
 		boolean isOperationSuccess = true;
+		int num = 0;
 		
+		// check whether exist record
+		try {
+			Class.forName("org.sqlite.JDBC");
+			String db = "jdbc:sqlite:" + dbName;
+			conne = DriverManager.getConnection(db);
+			stmt = conne.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM " + TABLE_NAME + " Where word = '" + word + "';");
+			while (rs.next()) {
+				num++;
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		if (num <= 0) {
+			return false;
+		}
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 			String db = "jdbc:sqlite:" + dbName;
@@ -108,7 +129,7 @@ public class SQLiteHelper {
 			isOperationSuccess = false;
 			e.printStackTrace();
 		}
-		
+
 		return isOperationSuccess;
 	}
 }

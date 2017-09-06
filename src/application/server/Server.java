@@ -1,3 +1,6 @@
+/**
+ * create Server Socket which listens to each client requests
+ */
 package application.server;
 
 import java.io.DataInputStream;

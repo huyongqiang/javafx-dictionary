@@ -7,6 +7,7 @@ public class MyResponse {
 	private String data;
 	
 	public MyResponse(String type, int status, String message, String data) {
+		this.setStatus(status);
 		this.setType(type);
 		this.setMessage(message);
 		this.setData(data);

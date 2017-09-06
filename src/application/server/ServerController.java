@@ -24,4 +24,12 @@ public class ServerController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void requestCloseSocket() {
+		try {
+			server.closeConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
