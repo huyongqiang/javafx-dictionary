@@ -4,8 +4,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import application.utils.MyResponse;
 import application.utils.Word;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class ClientActionHelper {
 	final String SEARCH = "search", ADD = "add", DELETE = "delete";

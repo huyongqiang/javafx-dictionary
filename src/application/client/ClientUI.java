@@ -40,11 +40,13 @@ public class ClientUI extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("client_ui.fxml"));
 		controller = new ClientController(host, port);
 		loader.setController(controller);
+		
 		Parent root = loader.load();
 		Scene scene = new Scene(root, 500, 375);
-
+		scene.getStylesheets().add(getClass().getResource("client.css").toExternalForm());
 		primaryStage.setTitle("Dictionary Client");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 

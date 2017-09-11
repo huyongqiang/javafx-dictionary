@@ -8,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Consumer;
 import javax.net.ServerSocketFactory;
 import application.utils.INetworkConnection;
@@ -51,10 +53,11 @@ public class Server implements INetworkConnection {
 		public void run() {
 			try {
 				server = factory.createServerSocket(port);
-				onReceiveCallback.accept("new Server created");
+				onReceiveCallback.accept(dataParse() + ": server created");
 				while (true) {
 					Socket client = server.accept();
 					// Start a new thread for a connection
+					onReceiveCallback.accept(dataParse() + ": a new client connected");
 					Thread thread = new Thread(() -> serveClient(client));
 					thread.setPriority(MAX_PRIORITY);
 					thread.start();
@@ -74,12 +77,16 @@ public class Server implements INetworkConnection {
 				String str = input.readUTF();
 				String jsonString = helper.handleRequest(str);
 				
-				onReceiveCallback.accept(str);
+				onReceiveCallback.accept(dataParse() + ": request - " + str);
 				output.writeUTF(jsonString);
 				output.flush();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String dataParse() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date());
 	}
 }

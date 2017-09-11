@@ -43,8 +43,9 @@ public class ServerUI extends Application {
 		Parent root = loader.load();
 		Scene scene = new Scene(root, 500, 375);
 
-		primaryStage.setTitle("Dictionary Server");
+		primaryStage.setTitle("Dictionary Server Logs");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 

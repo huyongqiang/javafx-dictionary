@@ -44,7 +44,6 @@ public class ClientController {
 		try {
 			String jsonString = helper.createSearchJson(searchField.getText());
 			client.send(jsonString);
-			searchField.setText("");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

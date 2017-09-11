@@ -6,6 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml">
-	<TextArea fx:id="output" />
-</VBox>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<TextArea fx:id="output" />
+	</center>
+</BorderPane>
